@@ -1,4 +1,4 @@
-export interface ConfigFreeip {
+export interface Freeip {
   hostname: string;
   path: string;
 

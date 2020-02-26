@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'scan/index', pathMatch: 'full' },
+  { path: '', redirectTo: 'scanner/home', pathMatch: 'full' },
   { path: 'user/', loadChildren: () => import('./user/user.module').then(m => m.UserModule) },
 ];
 

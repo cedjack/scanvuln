@@ -5,20 +5,26 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ScannerModule } from './scanner/scanner.module';
-import { ConfigFreeipComponent } from './config/config-freeip.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MessagesComponent } from './messages/messages.component';
+import { LayoutModule } from './ui/layout/layout.module';
+
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConfigFreeipComponent
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     ScannerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    LayoutModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent],
