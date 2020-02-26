@@ -1,0 +1,9 @@
+{
+  "hostname": "freegeoip.app",
+  "port": null,
+  "path": "/json/",
+  "headers": {
+    "accept": "application/json",
+    "content-type": "application/json"
+  }
+}
