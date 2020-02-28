@@ -9,13 +9,13 @@ import { Component, OnInit } from '@angular/core';
 
     <mat-grid-list
       responsive="true"
-      cols = "1"
+      [cols] = "cols"
       rowHeight="60"
       gutterSize="6px">
       <mat-grid-tile *ngFor="let folder of folders">
         <a class="grid-list-item mat-body mat-elevation-z2"
           mat-ripple
-          [href]="folder.link">
+          routerLink="">
           <mat-icon>insert_drive_file</mat-icon>
           <span class="flex-remain">{{folder.name}}</span>
           <button mat-icon-button
@@ -42,6 +42,8 @@ import { Component, OnInit } from '@angular/core';
         </a>
       </mat-grid-tile>
     </mat-grid-list>
+
+    <mat-divider></mat-divider>
   `,
   styles: [`
     .content {
@@ -75,16 +77,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HostListComponent implements OnInit {
 
-  private folders = [
-    { name: 'Folder 1', link: '#1' },
-    { name: 'Folder 2', link: '#2' },
-    { name: 'Folder 3', link: '#3' },
-    { name: 'Folder 4', link: '#4' },
-    { name: 'Folder 5', link: '#5' }
+  folders = [
+    { name: 'Hôtes 1', id: 1 },
+    { name: 'Hôtes 2', id: 2 },
+    { name: 'Hôtes 3', id: 3 },
+    { name: 'Hôtes 4', id: 4 },
+    { name: 'Hôtes 5', id: 5 },
+    { name: 'Hôtes 6', id: 6 }
   ];
 
   responsive = true;
-  cols = 1;
+  cols = 3;
 
   constructor() { }
 

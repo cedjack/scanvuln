@@ -1,32 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Freeip } from './freeip';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FreeipService {
-  private ip;
+  private freeip: Freeip;
   private url = 'https://freegeoip.app/json/';  // URL to web api
 
   httpOption = new HttpHeaders({
     'Content-Type': 'application/json'
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {  }
 
-  setIpLocation(ip){
-    this.ip = ip;
+  isLoaded() {
+    return this.freeip ? true : false;
   }
 
-  getIpLocation(){
-    return this.ip ? this.ip : false ;
+  get(): Freeip {
+    return this.freeip;
   }
 
-  getOwnIp() {
-    return this.http.get<any>(this.url);
+  register(freeip: Freeip): void {
+    this.freeip = freeip;
   }
 
-  getIpDetail(ip) {
-    return this.http.get<any>(`this.url${ip}`);
+  getOwnIp(): Observable<Freeip> {
+    return this.http.get<Freeip>(this.url);
+  }
+
+  getIpDetail(ip): Observable<Freeip> {
+    return this.http.get<Freeip>(`this.url${ip}`);
   }
 }

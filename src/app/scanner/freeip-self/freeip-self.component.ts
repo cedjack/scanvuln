@@ -2,51 +2,74 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FreeipService } from '../shared/freeip.service';
 import { AlertService } from 'src/app/ui/layout/alert.service';
 import { MessageService } from 'src/app/message.service';
+import { Freeip } from '../shared/freeip';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-freeip-self',
   template: `
-    <mat-card class="example-card" *ngIf="ip">
-      <mat-card-header [title]="ip['region_name']">
-        <mat-card-title>
-          <mat-icon>location_on</mat-icon> {{ ip['city'] }}</mat-card-title>
-        <mat-card-subtitle >{{ ip['country_name'] }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          ip: {{ ip['ip'] }}
-        </p>
-      </mat-card-content>
-    </mat-card>
+    <ng-container *ngIf="freeip">
+      <mat-card class="example-card">
+        <mat-card-header [title]="freeip.region_name">
+          <mat-card-title>
+            <mat-icon>location_on</mat-icon> {{ freeip.city }}
+          </mat-card-title>
+          <mat-card-subtitle>{{ freeip.country_name }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>ip: {{ freeip.ip }}</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+    <ng-container *ngIf="!freeip">
+      <div class="center"><mat-progress-spinner mode="indeterminate"></mat-progress-spinner></div>
+    </ng-container>
+    <ng-container *ngFor="let error of errors">
+      <div class="center">{{ error }}</div>
+    </ng-container>
   `,
-  styles: [`
+  styles: [
 
-  `]
+  ]
 })
 export class FreeipSelfComponent implements OnInit {
-  ip;
-  constructor(private freeipService: FreeipService, private alert: AlertService, private messageService: MessageService) { }
+  freeip: Freeip;
+  errors: string[] = [];
+
+  constructor(
+    private freeipService: FreeipService,
+    private alert: AlertService,
+    private snackBar: MatSnackBar,
+    private messageService: MessageService
+  ) {
+    this.freeip = undefined;
+  }
 
   ngOnInit(): void {
+    this.locateMe()
+  }
 
-    if (!this.freeipService.getIpLocation()){
-      this.freeipService.getOwnIp().subscribe(
-      (result) => {
-        console.log('resulat de l ip :', result);
-        this.alert.alertMe(`position trouvé : ${result['city']} (${result['country_name']} - ${result['region_name']})`, 'OK');
-        this.freeipService.setIpLocation(result);
-        this.messageService.add(`position trouvé : ${result['city']} (${result['country_name']} - ${result['region_name']})`);
-      },
-      (error) => {
+  locateMe(): void {
+    // on charge l ip seulement si besoin
+    if (!this.freeipService.isLoaded()) {
+      const loading = this.snackBar.open(`Localisation en cours ...`);
+      this.freeipService.getOwnIp().subscribe((freeip) => {
+        this.freeipService.register(freeip);
+        this.freeip = freeip;
+        this.alert.alertMe(`position trouvé : ${freeip.city} (${freeip.country_name} - ${freeip.region_name})`, 'OK');
+        this.messageService.add(`position trouvé : ${freeip.city} (${freeip.country_name} - ${freeip.region_name})`);
+      }, () => {
+        this.errors = [`Pas de connexion Internet`];
         this.alert.alertMe(' position introuvable !', 'J ai compris');
         console.log('HORS Ligne, JSON invalid');
+      }, () => {
+        loading.dismiss();
       });
     } else {
-      this.ip = this.freeipService.getIpLocation();
-        this.messageService.add(`position trouvé en mémoire`);
+      this.freeip = this.freeipService.get();
+      this.messageService.add(`position trouvé en mémoire`);
     }
-
-
   }
 
 }
