@@ -5,8 +5,6 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <h2>Liste des hôtes</h2>
 
-    <p class="mat-body">Cols: {{cols}}</p>
-
     <mat-grid-list
       responsive="true"
       [cols] = "cols"

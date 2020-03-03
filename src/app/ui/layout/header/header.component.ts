@@ -4,9 +4,9 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   selector: 'app-header',
   template: `
     <header id="header">
-      <div id="logo">
+      <!-- <div id="logo">
         <img src="assets/logo.png" alt="app" width="60" height="60">
-      </div>
+      </div> -->
       <app-menu [isAuthenticated]="isAuthenticated"></app-menu>
     </header>
   `,

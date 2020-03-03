@@ -1,22 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { ScannerModule } from './scanner/scanner.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { MessagesComponent } from './messages/messages.component';
 import { LayoutModule } from './ui/layout/layout.module';
+import { OopsModule } from './oops/oops.module';
+import { AppComponent } from './app.component';
 
-import { MaterialModule } from './material.module';
+import { ToastrModule } from "ngx-toastr";
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthService } from './core/auth/auth.service';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { AuthGuard } from './core/auth/auth.guard';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MessagesComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -24,9 +24,9 @@ import { MaterialModule } from './material.module';
     ScannerModule,
     BrowserAnimationsModule,
     LayoutModule,
-    MaterialModule
+    ToastrModule.forRoot(),
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
   exports: []
 })

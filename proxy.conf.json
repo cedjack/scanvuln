@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "proxy.tec.in.phm.education.gouv.fr:3128",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

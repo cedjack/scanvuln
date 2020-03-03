@@ -10,7 +10,6 @@ import { Component } from '@angular/core';
         <router-outlet></router-outlet>
       </main>
     </div>
-    <app-messages></app-messages>
   `,
   styleUrls: ['./app.component.scss']
 })

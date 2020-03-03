@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FreeipService } from '../shared/freeip.service';
 import { AlertService } from 'src/app/ui/layout/alert.service';
-import { MessageService } from 'src/app/message.service';
 import { Freeip } from '../shared/freeip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -41,7 +40,6 @@ export class FreeipSelfComponent implements OnInit {
     private freeipService: FreeipService,
     private alert: AlertService,
     private snackBar: MatSnackBar,
-    private messageService: MessageService
   ) {
     this.freeip = undefined;
   }
@@ -58,7 +56,6 @@ export class FreeipSelfComponent implements OnInit {
         this.freeipService.register(freeip);
         this.freeip = freeip;
         this.alert.alertMe(`position trouvé : ${freeip.city} (${freeip.country_name} - ${freeip.region_name})`, 'OK');
-        this.messageService.add(`position trouvé : ${freeip.city} (${freeip.country_name} - ${freeip.region_name})`);
       }, () => {
         this.errors = [`Pas de connexion Internet`];
         this.alert.alertMe(' position introuvable !', 'J ai compris');
@@ -68,7 +65,6 @@ export class FreeipSelfComponent implements OnInit {
       });
     } else {
       this.freeip = this.freeipService.get();
-      this.messageService.add(`position trouvé en mémoire`);
     }
   }
 
